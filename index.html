@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Piyush Gaikwad | Embedded & IoT Engineer</title>
+  <!-- Google Fonts + Font Awesome + jsPDF + autoTable -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #03070f;
+      color: #eef5ff;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* ---------- BLURRED CIRCUIT BOARD BACKGROUND ---------- */
+    .circuit-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+      background: radial-gradient(circle at 30% 10%, #01101f, #000000);
+    }
+    .circuit-svg-bg {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -30%;
+      left: -30%;
+      opacity: 0.3;
+      filter: blur(10px) brightness(0.6);
+      pointer-events: none;
+    }
+    .overlay-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(0, 25, 50, 0.65), rgba(0, 0, 0, 0.85));
+      z-index: -1;
+    }
+
+    /* Glassmorphism base */
+    .glass {
+      background: rgba(10, 25, 45, 0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 255, 200, 0.25);
+      border-radius: 2rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 1.8rem 2rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    /* Top section: circular image + name */
+    .top-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2rem;
+      background: rgba(8, 22, 40, 0.55);
+      backdrop-filter: blur(10px);
+      border-radius: 2rem;
+      padding: 1.8rem 2rem;
+      margin-bottom: 3rem;
+      border: 1px solid rgba(0, 255, 210, 0.35);
+      transition: all 0.2s;
+    }
+    .profile-img {
+      flex-shrink: 0;
+    }
+    .circle-img {
+      width: 130px;
+      height: 130px;
+      background: linear-gradient(135deg, #0affc3, #0088ff);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #02121f;
+      box-shadow: 0 0 0 3px rgba(0, 255, 200, 0.6), 0 8px 20px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+    .circle-img i {
+      font-size: 3.8rem;
+      color: #02121f;
+    }
+    .circle-img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 0 4px #0affc3;
+    }
+    .name-title h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff, #0affdd, #4aff9e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .name-title .title {
+      font-size: 1.4rem;
+      color: #4effe0;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+    .name-title p {
+      color: #bbecff;
+      margin-top: 0.6rem;
+      font-size: 0.95rem;
+    }
+
+    /* Skills Section - large centered card */
+    .skills-card {
+      text-align: center;
+      padding: 1.8rem 2rem;
+      margin-bottom: 3rem;
+      transition: all 0.3s;
+    }
+    .skills-card h2 {
+      font-size: 1.9rem;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      border-bottom: 2px solid #0affb3;
+      padding-bottom: 0.4rem;
+    }
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .skill-badge {
+      background: rgba(0, 230, 200, 0.12);
+      border: 1px solid rgba(0, 255, 200, 0.5);
+      padding: 0.6rem 1.2rem;
+      border-radius: 3rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .skill-badge:hover {
+      background: rgba(10, 255, 190, 0.3);
+      border-color: #0affcc;
+      transform: translateY(-2px);
+      box-shadow: 0 0 8px cyan;
+    }
+
+    /* Projects row */
+    .projects-section h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      border-left: 5px solid #0affb3;
+      padding-left: 1rem;
+    }
+    .projects-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .project-card {
+      background: rgba(12, 28, 45, 0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 1.8rem;
+      padding: 1.7rem;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border: 1px solid rgba(0, 210, 200, 0.3);
+    }
+    .project-card:hover {
+      transform: translateY(-8px);
+      border-color: #0affc7;
+      box-shadow: 0 0 20px rgba(0, 255, 200, 0.3);
+    }
+    .project-card h3 {
+      font-size: 1.7rem;
+      margin: 0.8rem 0 0.8rem;
+    }
+    .project-card p {
+      color: #cbebff;
+      margin-bottom: 1.6rem;
+    }
+    .btn-neon {
+      background: rgba(0, 230, 200, 0.1);
+      border: 1px solid #04ffb0;
+      color: #baffec;
+      padding: 0.6rem 1.4rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-neon:hover {
+      background: #0affb3;
+      color: #03101c;
+      box-shadow: 0 0 12px #0affb3;
+      border-color: transparent;
+    }
+
+    /* Report Panel (dynamic) */
+    .report-panel {
+      margin: 2rem 0 2rem;
+      background: rgba(6, 18, 30, 0.8);
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      padding: 2rem;
+      border: 1px solid rgba(0, 255, 200, 0.5);
+      transition: 0.2s;
+      animation: fadeSlide 0.4s ease;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom: 1px solid cyan;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+    }
+    .report-header h2 {
+      font-size: 1.9rem;
+      background: linear-gradient(120deg, #aafff0, #0affa0);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .close-report {
+      background: none;
+      border: 1px solid cyan;
+      padding: 0.4rem 1rem;
+      border-radius: 2rem;
+      color: #bbffee;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .close-report:hover {
+      background: cyan;
+      color: #02101c;
+    }
+    .report-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+    .report-section {
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 1.2rem;
+      padding: 1rem 1.4rem;
+      border-left: 4px solid #0affb3;
+    }
+    .report-section h3 {
+      font-size: 1.35rem;
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #8effe0;
+    }
+    .components-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 0.5rem;
+    }
+    .comp-tag {
+      background: rgba(0, 255, 180, 0.15);
+      padding: 0.3rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      border: 0.5px solid #0affb3;
+    }
+    .diagram-svg {
+      background: #041f2b;
+      border-radius: 1rem;
+      padding: 1rem;
+      text-align: center;
+      margin-top: 0.6rem;
+      border: 1px dashed #1effc0;
+    }
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .download-pdf-btn {
+      background: linear-gradient(95deg, #0affb1, #00a6ff);
+      border: none;
+      padding: 0.7rem 1.6rem;
+      border-radius: 2rem;
+      font-weight: bold;
+      color: #02101c;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: 0.2s;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .download-pdf-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 12px #0affbc;
+    }
+
+    /* Contact Section */
+    .contact-area {
+      margin-top: 3rem;
+      text-align: center;
+      padding: 1.8rem;
+      border-radius: 2rem;
+      background: rgba(5, 18, 30, 0.6);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 255, 200, 0.3);
+    }
+    .contact-area h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 255, 200, 0.1);
+      padding: 0.8rem 1.8rem;
+      border-radius: 3rem;
+      font-size: 1.1rem;
+      text-decoration: none;
+      color: #d5fff2;
+      font-weight: 500;
+      transition: all 0.2s;
+      border: 1px solid cyan;
+    }
+    .contact-email i {
+      font-size: 1.3rem;
+    }
+    .contact-email:hover {
+      background: #0affb3;
+      color: #031c28;
+      box-shadow: 0 0 12px cyan;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      margin-top: 2rem;
+      opacity: 0.6;
+    }
+    @media (max-width: 780px) {
+      .container { padding: 1rem; }
+      .top-row { flex-direction: column; text-align: center; }
+      .name-title h1 { font-size: 2rem; }
+      .circle-img { width: 100px; height: 100px; }
+      .circle-img i { font-size: 3rem; }
+      .skills-card h2 { font-size: 1.6rem; }
+      .project-card h3 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="circuit-backdrop">
+  <div class="circuit-svg-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="pcbGrid" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+          <path d="M15 25 L45 25 L45 55 M75 75 L75 45 L55 45 M85 15 L65 15 L65 35 M20 80 L40 80 L40 65" stroke="#0affbc" stroke-width="1.2" fill="none" opacity="0.6"/>
+          <circle cx="50" cy="50" r="3.5" fill="#0affcf" opacity="0.8"/>
+          <circle cx="15" cy="70" r="2" fill="#0affc3"/>
+          <rect x="82" y="82" width="5" height="5" fill="#0affb1" opacity="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#pcbGrid)" />
+      <path d="M280 140 L420 140 L420 260 L580 260" stroke="#0affc8" stroke-width="1.4" fill="none" opacity="0.4"/>
+      <circle cx="280" cy="140" r="5" fill="#0affc2" opacity="0.7"/>
+    </svg>
+  </div>
+</div>
+<div class="overlay-gradient"></div>
+
+<div class="container">
+  <!-- Top Section: Circular Profile + Name -->
+  <div class="top-row glass">
+    <div class="profile-img">
+      <div class="circle-img">
+        <i class="fas fa-microchip"></i>
+      </div>
+    </div>
+    <div class="name-title">
+      <h1>Piyush Gaikwad</h1>
+      <div class="title">Electrical Engineer | IoT Developer</div>
+      <p>Smart embedded systems, real-time monitoring & energy analytics.</p>
+    </div>
+  </div>
+
+  <!-- Skills Section: large centered card -->
+  <div class="skills-card glass">
+    <h2><i class="fas fa-microchip"></i> Technical Expertise</h2>
+    <div class="skills-grid">
+      <span class="skill-badge">Arduino</span>
+      <span class="skill-badge">ESP8266</span>
+      <span class="skill-badge">ESP32</span>
+      <span class="skill-badge">MATLAB/Simulink</span>
+      <span class="skill-badge">IoT (ThingSpeak, Adafruit IO)</span>
+      <span class="skill-badge">Embedded Systems</span>
+      <span class="skill-badge">Signal Processing</span>
+      <span class="skill-badge">Power Systems</span>
+    </div>
+  </div>
+
+  <!-- Projects Section -->
+  <div class="projects-section">
+    <h2><i class="fas fa-project-diagram"></i> Flagship Projects</h2>
+    <div class="projects-row">
+      <div class="project-card">
+        <i class="fas fa-bolt" style="font-size: 2rem; color: #0affc3;"></i>
+        <h3>Smart Energy Meter</h3>
+        <p>Arduino + ESP8266 real-time power monitor, ThingSpeak analytics.</p>
+        <button class="btn-neon view-report-btn" data-project="smartMeter">View Report <i class="fas fa-arrow-right"></i></button>
+      </div>
+      <div class="project-card">
+        <i class="fas fa-waveform" style="font-size: 2rem; color: #0affc3;"></i>
+        <h3>Power Quality Analyzer</h3>
+        <p>THD, sag/swell, power factor measurement for industrial grids.</p>
+        <button class="btn-neon view-report-btn" data-project="powerQuality">View Report <i class="fas fa-arrow-right"></i></button>
+      </div>
+      <div class="project-card">
+        <i class="fas fa-wind" style="font-size: 2rem; color: #0affc3;"></i>
+        <h3>Air Quality Monitoring System</h3>
+        <p>MQ sensors, AQI calculation, cloud dashboard & alerts.</p>
+        <button class="btn-neon view-report-btn" data-project="airQuality">View Report <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Report Panel (hidden initially) -->
+  <div id="reportPanel" style="display: none;"></div>
+
+  <!-- Contact Section -->
+  <div class="contact-area">
+    <h3><i class="fas fa-envelope"></i> Let’s Connect</h3>
+    <a href="mailto:pg8530391082@gmail.com" class="contact-email">
+      <i class="fas fa-paper-plane"></i> pg8530391082@gmail.com
+    </a>
+    <p style="margin-top: 1rem; font-size: 0.85rem;">Embedded Systems · IoT · Power Quality · Real-time Analytics</p>
+  </div>
+  <footer>
+    <i class="fas fa-microchip"></i> Piyush Gaikwad — Engineer intelligent systems for a smarter tomorrow
+  </footer>
+</div>
+
+<script>
+  // Detailed project dataset
+  const projectsData = {
+    smartMeter: {
+      title: "⚡ Smart Energy Meter (IoT Enabled)",
+      abstract: "IoT-based real-time power & energy monitoring system using Arduino Uno, ESP8266, ZMPT101B (voltage sensor) and ACS712 (current sensor). Data is transmitted to ThingSpeak cloud, enabling consumption analytics, demand-side management, and remote monitoring. Achieved ±2% accuracy in active energy readings.",
+      components: ["Arduino Uno", "ESP8266-01", "ZMPT101B (AC Voltage)", "ACS712 20A", "16x2 LCD (I2C)", "5V Relay", "ThingSpeak API"],
+      working: "Voltage and current sensors feed analog signals to Arduino. RMS voltage & current computed via sampling. Real power = V_rms × I_rms × power factor. ESP8266 posts JSON data to ThingSpeak every 15 seconds. Web dashboard visualizes hourly/daily trends and allows load control via relay.",
+      circuitDiagram: `<div class="diagram-svg"><svg width="100%" height="150" viewBox="0 0 600 130"><rect x="20" y="25" width="75" height="40" fill="none" stroke="#0affb3" stroke-width="1.5" rx="6"/><text x="32" y="50" fill="#dcfff0" font-size="9">ZMPT101B</text><line x1="95" y1="45" x2="130" y2="45" stroke="#0affb3"/><rect x="130" y="15" width="90" height="45" fill="none" stroke="#0affb3" rx="6"/><text x="148" y="42" fill="#e2fff5" font-size="9">Arduino Uno</text><line x1="220" y1="38" x2="255" y2="38" stroke="#0affb3"/><rect x="255" y="15" width="90" height="45" fill="none" stroke="#0affb3" rx="6"/><text x="273" y="42" fill="#e2fff5" font-size="9">ESP8266</text><line x1="345" y1="37" x2="385" y2="37" stroke="#0affb3"/><rect x="385" y="10" width="90" height="50" fill="none" stroke="#0affb3" rx="8"/><text x="400" y="42" fill="#e2fff5" font-size="9">ThingSpeak</text><text x="25" y="105" fill="#b4ffe0" font-size="8">ACS712 → A0, Relay on pin 8</text></svg></div>`,
+      flowchart: `<div class="diagram-svg"><svg width="100%" height="110" viewBox="0 0 420 90"><rect x="25" y="5" width="120" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="50" y="23" fill="#f0fffc" font-size="10">Init sensors & WiFi</text><line x1="85" y1="31" x2="85" y2="45" stroke="#0affb3"/><polygon points="81,45 85,52 89,45"/><rect x="25" y="52" width="120" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="45" y="70" fill="#f0fffc" font-size="10">Read V, I, calc Power</text><line x1="85" y1="78" x2="85" y2="90" stroke="#0affb3"/><polygon points="81,90 85,97 89,90"/><rect x="190" y="52" width="130" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="215" y="70" fill="#f0fffc" font-size="10">Upload to ThingSpeak</text><line x1="145" y1="65" x2="188" y2="65" stroke="#0affb3" stroke-dasharray="3"/></svg></div>`,
+      results: "Real-time energy monitoring with ±2% accuracy; saved 20% standby power via relay automation. Historical data accessible via ThingSpeak graphs. Mobile dashboard for remote energy tracking.",
+      applications: "Home automation, industrial submetering, net metering, energy audits, demand response.",
+      futureScope: "ML-based load forecasting, integration with Home Assistant, voice assistant control, solar net-metering extension."
+    },
+    powerQuality: {
+      title: "🔍 Power Quality Monitoring System",
+      abstract: "Real-time power quality analyzer based on STM32, measuring Total Harmonic Distortion (THD), voltage sag/swell, power factor, and frequency variations. FFT algorithm extracts harmonics up to 25th order for industrial power analysis.",
+      components: ["STM32F103", "Voltage step-down transformer", "LM324 Op-Amp", "Zero-crossing detector", "ESP32", "Blynk Dashboard", "LCD 20x4"],
+      working: "Voltage signal conditioned, sampled at 8 kHz. STM32 performs FFT to obtain harmonic spectrum, THD = (RMS of harmonics / fundamental). Sag/swell detection via sliding RMS window. Data sent to Blynk and local display for alerts and trend visualization.",
+      circuitDiagram: `<div class="diagram-svg"><svg width="100%" height="140" viewBox="0 0 520 110"><rect x="10" y="30" width="80" height="40" fill="none" stroke="#0affb3" rx="6"/><text x="18" y="55" fill="#c5ffee" font-size="9">Signal Cond.</text><line x1="90" y1="50" x2="125" y2="50" stroke="#0affb3"/><rect x="125" y="15" width="110" height="50" fill="none" stroke="#0affb3" rx="8"/><text x="145" y="48" fill="#ccffef" font-size="9">STM32 (FFT + THD)</text><line x1="235" y1="40" x2="270" y2="40" stroke="#0affb3"/><rect x="270" y="20" width="110" height="45" fill="none" stroke="#0affb3" rx="8"/><text x="290" y="48" fill="#ccffef" font-size="9">WiFi / Cloud</text></svg></div>`,
+      flowchart: `<div class="diagram-svg"><svg width="100%" height="115" viewBox="0 0 450 95"><rect x="30" y="5" width="130" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="55" y="23" fill="#eefaf5" font-size="10">Sample @8kHz (ADC)</text><line x1="95" y1="31" x2="95" y2="45" stroke="#0affb3"/><rect x="30" y="52" width="140" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="60" y="70" fill="#eefaf5" font-size="10">FFT → THD, PF, Sag/Swell</text><line x1="95" y1="78" x2="95" y2="90" stroke="#0affb3"/><rect x="210" y="52" width="130" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="232" y="70" fill="#eefaf5" font-size="10">Cloud Dashboard</text><line x1="170" y1="65" x2="208" y2="65" stroke="#0affb3" stroke-dasharray="3"/></svg></div>`,
+      results: "THD measured with <0.7% error, sag detection in <1 cycle. Real-time graphs on Blynk, historical archive of power quality events. Improved uptime by early warning of poor power quality.",
+      applications: "Industrial drives, datacenters, substations, power quality audits, sensitive equipment protection.",
+      futureScope: "AI-based fault classification, IEC 61850 integration, edge ML for anomaly prediction."
+    },
+    airQuality: {
+      title: "🌫️ Air Quality Monitoring (AQI) System",
+      abstract: "Real-time air quality index (AQI) system using ESP32, MQ135 (CO2, NH3), MQ7 (CO) and DHT22. AQI computed based on Indian CPCB standards. Data transmitted to Adafruit IO with live dashboard and threshold alerts.",
+      components: ["ESP32", "MQ135", "MQ7", "DHT22", "OLED SSD1306", "Buzzer", "Adafruit IO"],
+      working: "Sensors warm-up, ESP32 reads analog voltages and maps to ppm using pre-calibrated curves. AQI sub-indices for each pollutant are combined. Data displayed on OLED, pushed to Adafruit IO every 10 seconds. If CO exceeds 9ppm, buzzer triggers and push notification via IFTTT.",
+      circuitDiagram: `<div class="diagram-svg"><svg width="100%" height="135" viewBox="0 0 540 110"><rect x="10" y="35" width="80" height="35" fill="none" stroke="#0affb3" rx="6"/><text x="22" y="58" fill="#c4ffe8" font-size="9">MQ135 / MQ7</text><line x1="90" y1="52" x2="120" y2="52" stroke="#0affb3"/><rect x="120" y="20" width="100" height="50" fill="none" stroke="#0affb3" rx="6"/><text x="143" y="50" fill="#d1ffef" font-size="10">ESP32</text><line x1="220" y1="45" x2="250" y2="45" stroke="#0affb3"/><rect x="250" y="25" width="120" height="45" fill="none" stroke="#0affb3" rx="8"/><text x="270" y="52" fill="#d1ffef" font-size="9">Adafruit IO</text></svg></div>`,
+      flowchart: `<div class="diagram-svg"><svg width="100%" height="115" viewBox="0 0 450 95"><rect x="20" y="5" width="135" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="45" y="23" fill="#edfff6" font-size="10">Init MQ & DHT22</text><line x1="87" y1="31" x2="87" y2="45" stroke="#0affb3"/><rect x="20" y="52" width="135" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="43" y="70" fill="#edfff6" font-size="10">ppm → AQI calculation</text><line x1="87" y1="78" x2="87" y2="90" stroke="#0affb3"/><rect x="195" y="52" width="145" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="218" y="70" fill="#edfff6" font-size="10">Cloud + Buzzer Alert</text><line x1="155" y1="65" x2="193" y2="65" stroke="#0affb3" stroke-dasharray="3"/></svg></div>`,
+      results: "Real-time AQI displayed locally and remotely; email/ buzzer alerts for hazardous levels. Achieved 92% accuracy compared to reference monitor, historical trends help identify pollution patterns.",
+      applications: "Smart city pollution monitoring, indoor air purifiers, HVAC automation, industrial safety systems.",
+      futureScope: "LoRaWAN mesh networking, solar-powered nodes, predictive AQI using time-series models."
+    }
+  };
+
+  const reportPanel = document.getElementById('reportPanel');
+
+  // Utility: generate PDF dynamically using jsPDF
+  async function downloadProjectPDF(projectId) {
+    const data = projectsData[projectId];
+    if (!data) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    doc.setFont('helvetica');
+    doc.setFontSize(20);
+    doc.setTextColor(0, 180, 180);
+    doc.text(data.title.replace(/[^a-zA-Z0-9 ]/g, ''), 15, 20);
+    doc.setFontSize(11);
+    doc.setTextColor(30, 255, 210);
+    doc.text(`Abstract:`, 15, 35);
+    doc.setFontSize(10);
+    doc.setTextColor(200, 200, 200);
+    const splitAbstract = doc.splitTextToSize(data.abstract, 170);
+    doc.text(splitAbstract, 15, 42);
+    let y = 42 + splitAbstract.length * 5;
+    doc.setFontSize(11);
+    doc.setTextColor(0, 255, 190);
+    doc.text(`Components Used:`, 15, y);
+    doc.setFontSize(9);
+    doc.setTextColor(220, 220, 220);
+    const comps = data.components.join(", ");
+    doc.text(comps, 15, y + 6);
+    y += 15;
+    doc.setFontSize(11);
+    doc.setTextColor(0, 255, 190);
+    doc.text(`Working Principle:`, 15, y);
+    doc.setFontSize(9);
+    doc.setTextColor(220, 220, 220);
+    const workSplit = doc.splitTextToSize(data.working, 170);
+    doc.text(workSplit, 15, y + 6);
+    y += 10 + workSplit.length * 4.5;
+    if (y > 260) { doc.addPage(); y = 20; }
+    doc.setFontSize(11);
+    doc.setTextColor(0, 255, 190);
+    doc.text(`Results:`, 15, y);
+    doc.setFontSize(9);
+    doc.setTextColor(220,220,220);
+    const resSplit = doc.splitTextToSize(data.results, 170);
+    doc.text(resSplit, 15, y + 6);
+    y += 12 + resSplit.length * 4.5;
+    doc.setFontSize(11);
+    doc.setTextColor(0, 255, 190);
+    doc.text(`Applications:`, 15, y);
+    doc.setFontSize(9);
+    doc.setTextColor(220,220,220);
+    doc.text(data.applications, 15, y + 6);
+    y += 12;
+    doc.text(`Future Scope:`, 15, y);
+    doc.setFontSize(9);
+    const futureSplit = doc.splitTextToSize(data.futureScope, 170);
+    doc.text(futureSplit, 15, y + 6);
+    doc.save(`${projectId}_Full_Report.pdf`);
+  }
+
+  function renderReport(projectKey) {
+    const proj = projectsData[projectKey];
+    if (!proj) return;
+    const html = `
+      <div class="report-header">
+        <h2>${proj.title}</h2>
+        <div>
+          <button class="close-report" id="closeReportBtn"><i class="fas fa-times"></i> Close Report</button>
+        </div>
+      </div>
+      <div class="report-grid">
+        <div class="report-section"><h3><i class="fas fa-file-alt"></i> Abstract</h3><p>${proj.abstract}</p></div>
+        <div class="report-section"><h3><i class="fas fa-microchip"></i> Components Used</h3><div class="components-list">${proj.components.map(c => `<span class="comp-tag">${c}</span>`).join('')}</div></div>
+        <div class="report-section"><h3><i class="fas fa-cogs"></i> Working Principle</h3><p>${proj.working}</p></div>
+        <div class="report-section"><h3><i class="fas fa-project-diagram"></i> Circuit Diagram</h3>${proj.circuitDiagram}</div>
+        <div class="report-section"><h3><i class="fas fa-chart-line"></i> Flowchart</h3>${proj.flowchart}</div>
+        <div class="report-section"><h3><i class="fas fa-chart-bar"></i> Results</h3><p>${proj.results}</p></div>
+        <div class="report-section"><h3><i class="fas fa-industry"></i> Applications</h3><p>${proj.applications}</p></div>
+        <div class="report-section"><h3><i class="fas fa-rocket"></i> Future Scope</h3><p>${proj.futureScope}</p></div>
+        <div style="text-align: center; margin-top: 0.5rem;">
+          <button class="download-pdf-btn" id="downloadPdfBtn"><i class="fas fa-download"></i> Download Full Report (PDF)</button>
+        </div>
+      </div>
+    `;
+    reportPanel.innerHTML = html;
+    reportPanel.style.display = 'block';
+    document.getElementById('closeReportBtn').addEventListener('click', () => {
+      reportPanel.style.display = 'none';
+      reportPanel.innerHTML = '';
+    });
+    const downloadBtn = document.getElementById('downloadPdfBtn');
+    downloadBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      downloadProjectPDF(projectKey);
+    });
+    reportPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // attach View Report listeners
+  document.querySelectorAll('.view-report-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const projectId = btn.getAttribute('data-project');
+      if (projectsData[projectId]) {
+        renderReport(projectId);
+      }
+    });
+  });
+</script>
+</body>
+</html>
