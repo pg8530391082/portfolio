@@ -4,11 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Piyush Gaikwad | Embedded & IoT Engineer</title>
-  <!-- Google Fonts + Font Awesome + jsPDF + autoTable -->
+  <!-- Google Fonts + Font Awesome + jsPDF -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -24,7 +23,7 @@
       scroll-behavior: smooth;
     }
 
-    /* ---------- BLURRED CIRCUIT BOARD BACKGROUND ---------- */
+    /* ---------- BLURRED CIRCUIT BOARD BACKGROUND (SVG + BLUR) ---------- */
     .circuit-backdrop {
       position: fixed;
       top: 0;
@@ -33,29 +32,31 @@
       height: 100%;
       z-index: -2;
       overflow: hidden;
-      background: radial-gradient(circle at 30% 10%, #01101f, #000000);
+      background: radial-gradient(circle at 20% 30%, #021c2c, #000000);
     }
-    .circuit-svg-bg {
+    .blur-svg {
       position: absolute;
       width: 200%;
       height: 200%;
       top: -30%;
       left: -30%;
-      opacity: 0.3;
-      filter: blur(10px) brightness(0.6);
+      filter: blur(12px) brightness(0.55);
       pointer-events: none;
+      opacity: 0.75;
     }
-    .overlay-gradient {
+    .overlay-dark {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(ellipse at 50% 40%, rgba(0, 25, 50, 0.65), rgba(0, 0, 0, 0.85));
+      background: radial-gradient(ellipse at 50% 40%, rgba(0, 20, 40, 0.65), rgba(0, 0, 0, 0.85));
       z-index: -1;
     }
+    /* optional background image fallback (if you place assets/images/background.jpg) */
+    /* .circuit-backdrop::after { background-image: url('assets/images/background.jpg'); ... } */
 
-    /* Glassmorphism base */
+    /* Glassmorphism core */
     .glass {
       background: rgba(10, 25, 45, 0.55);
       backdrop-filter: blur(12px);
@@ -73,7 +74,7 @@
       z-index: 3;
     }
 
-    /* Top section: circular image + name */
+    /* Top section: circular profile image + name */
     .top-row {
       display: flex;
       flex-wrap: wrap;
@@ -85,7 +86,7 @@
       padding: 1.8rem 2rem;
       margin-bottom: 3rem;
       border: 1px solid rgba(0, 255, 210, 0.35);
-      transition: all 0.2s;
+      transition: transform 0.2s;
     }
     .profile-img {
       flex-shrink: 0;
@@ -127,13 +128,13 @@
       margin-top: 0.5rem;
       font-weight: 500;
     }
-    .name-title p {
+    .name-title .tagline {
       color: #bbecff;
       margin-top: 0.6rem;
       font-size: 0.95rem;
     }
 
-    /* Skills Section - large centered card */
+    /* Skills Section */
     .skills-card {
       text-align: center;
       padding: 1.8rem 2rem;
@@ -229,13 +230,12 @@
     /* Report Panel (dynamic) */
     .report-panel {
       margin: 2rem 0 2rem;
-      background: rgba(6, 18, 30, 0.8);
+      background: rgba(6, 18, 30, 0.82);
       backdrop-filter: blur(20px);
       border-radius: 2rem;
       padding: 2rem;
       border: 1px solid rgba(0, 255, 200, 0.5);
-      transition: 0.2s;
-      animation: fadeSlide 0.4s ease;
+      animation: fadeSlide 0.35s ease-out;
     }
     @keyframes fadeSlide {
       from { opacity: 0; transform: translateY(18px); }
@@ -303,7 +303,7 @@
       border: 0.5px solid #0affb3;
     }
     .diagram-svg {
-      background: #041f2b;
+      background: #051f2b;
       border-radius: 1rem;
       padding: 1rem;
       text-align: center;
@@ -390,7 +390,7 @@
 <body>
 
 <div class="circuit-backdrop">
-  <div class="circuit-svg-bg">
+  <div class="blur-svg">
     <svg width="100%" height="100%" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <pattern id="pcbGrid" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
@@ -406,10 +406,10 @@
     </svg>
   </div>
 </div>
-<div class="overlay-gradient"></div>
+<div class="overlay-dark"></div>
 
 <div class="container">
-  <!-- Top Section: Circular Profile + Name -->
+  <!-- Top Section: Circular profile image + Name -->
   <div class="top-row glass">
     <div class="profile-img">
       <div class="circle-img">
@@ -419,13 +419,13 @@
     <div class="name-title">
       <h1>Piyush Gaikwad</h1>
       <div class="title">Electrical Engineer | IoT Developer</div>
-      <p>Smart embedded systems, real-time monitoring & energy analytics.</p>
+      <div class="tagline">Building intelligent embedded systems, smart metering, and real‑time analytics for a connected world.</div>
     </div>
   </div>
 
   <!-- Skills Section: large centered card -->
   <div class="skills-card glass">
-    <h2><i class="fas fa-microchip"></i> Technical Expertise</h2>
+    <h2><i class="fas fa-microchip"></i> Technical Arsenal</h2>
     <div class="skills-grid">
       <span class="skill-badge">Arduino</span>
       <span class="skill-badge">ESP8266</span>
@@ -445,25 +445,25 @@
       <div class="project-card">
         <i class="fas fa-bolt" style="font-size: 2rem; color: #0affc3;"></i>
         <h3>Smart Energy Meter</h3>
-        <p>Arduino + ESP8266 real-time power monitor, ThingSpeak analytics.</p>
+        <p>Arduino + ESP8266 real-time power monitoring, ThingSpeak cloud analytics, energy management.</p>
         <button class="btn-neon view-report-btn" data-project="smartMeter">View Report <i class="fas fa-arrow-right"></i></button>
       </div>
       <div class="project-card">
         <i class="fas fa-waveform" style="font-size: 2rem; color: #0affc3;"></i>
         <h3>Power Quality Analyzer</h3>
-        <p>THD, sag/swell, power factor measurement for industrial grids.</p>
+        <p>THD, sag/swell detection, power factor measurement for industrial power networks.</p>
         <button class="btn-neon view-report-btn" data-project="powerQuality">View Report <i class="fas fa-arrow-right"></i></button>
       </div>
       <div class="project-card">
         <i class="fas fa-wind" style="font-size: 2rem; color: #0affc3;"></i>
         <h3>Air Quality Monitoring System</h3>
-        <p>MQ sensors, AQI calculation, cloud dashboard & alerts.</p>
+        <p>MQ135, MQ7 sensors, AQI calculation, cloud dashboard & real-time alerts.</p>
         <button class="btn-neon view-report-btn" data-project="airQuality">View Report <i class="fas fa-arrow-right"></i></button>
       </div>
     </div>
   </div>
 
-  <!-- Dynamic Report Panel (hidden initially) -->
+  <!-- Dynamic Report Panel Container -->
   <div id="reportPanel" style="display: none;"></div>
 
   <!-- Contact Section -->
@@ -472,131 +472,73 @@
     <a href="mailto:pg8530391082@gmail.com" class="contact-email">
       <i class="fas fa-paper-plane"></i> pg8530391082@gmail.com
     </a>
-    <p style="margin-top: 1rem; font-size: 0.85rem;">Embedded Systems · IoT · Power Quality · Real-time Analytics</p>
+    <p style="margin-top: 1rem; font-size: 0.85rem;">Embedded Systems · IoT · Power Quality · Real‑time Monitoring</p>
   </div>
   <footer>
-    <i class="fas fa-microchip"></i> Piyush Gaikwad — Engineer intelligent systems for a smarter tomorrow
+    <i class="fas fa-microchip"></i> Piyush Gaikwad — Designing the future of embedded intelligence
   </footer>
 </div>
 
 <script>
-  // Detailed project dataset
+  // ----- Project detailed data (used for reports and fallback PDF generation) -----
   const projectsData = {
     smartMeter: {
       title: "⚡ Smart Energy Meter (IoT Enabled)",
-      abstract: "IoT-based real-time power & energy monitoring system using Arduino Uno, ESP8266, ZMPT101B (voltage sensor) and ACS712 (current sensor). Data is transmitted to ThingSpeak cloud, enabling consumption analytics, demand-side management, and remote monitoring. Achieved ±2% accuracy in active energy readings.",
+      abstract: "IoT-based real-time energy monitoring system using Arduino Uno, ESP8266, ZMPT101B (voltage sensor) and ACS712 (current sensor). Data transmitted to ThingSpeak cloud for historical analysis, enabling demand-side management and real-time consumption insights. Achieved ±2% accuracy in active energy readings.",
       components: ["Arduino Uno", "ESP8266-01", "ZMPT101B (AC Voltage)", "ACS712 20A", "16x2 LCD (I2C)", "5V Relay", "ThingSpeak API"],
-      working: "Voltage and current sensors feed analog signals to Arduino. RMS voltage & current computed via sampling. Real power = V_rms × I_rms × power factor. ESP8266 posts JSON data to ThingSpeak every 15 seconds. Web dashboard visualizes hourly/daily trends and allows load control via relay.",
+      working: "Voltage and current sensors feed analog signals to Arduino. RMS calculation via sampling; active power = V_rms × I_rms × power factor. ESP8266 sends JSON payload to ThingSpeak every 15 seconds. User dashboard visualizes hourly/daily trends and allows remote load control via relay.",
       circuitDiagram: `<div class="diagram-svg"><svg width="100%" height="150" viewBox="0 0 600 130"><rect x="20" y="25" width="75" height="40" fill="none" stroke="#0affb3" stroke-width="1.5" rx="6"/><text x="32" y="50" fill="#dcfff0" font-size="9">ZMPT101B</text><line x1="95" y1="45" x2="130" y2="45" stroke="#0affb3"/><rect x="130" y="15" width="90" height="45" fill="none" stroke="#0affb3" rx="6"/><text x="148" y="42" fill="#e2fff5" font-size="9">Arduino Uno</text><line x1="220" y1="38" x2="255" y2="38" stroke="#0affb3"/><rect x="255" y="15" width="90" height="45" fill="none" stroke="#0affb3" rx="6"/><text x="273" y="42" fill="#e2fff5" font-size="9">ESP8266</text><line x1="345" y1="37" x2="385" y2="37" stroke="#0affb3"/><rect x="385" y="10" width="90" height="50" fill="none" stroke="#0affb3" rx="8"/><text x="400" y="42" fill="#e2fff5" font-size="9">ThingSpeak</text><text x="25" y="105" fill="#b4ffe0" font-size="8">ACS712 → A0, Relay on pin 8</text></svg></div>`,
       flowchart: `<div class="diagram-svg"><svg width="100%" height="110" viewBox="0 0 420 90"><rect x="25" y="5" width="120" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="50" y="23" fill="#f0fffc" font-size="10">Init sensors & WiFi</text><line x1="85" y1="31" x2="85" y2="45" stroke="#0affb3"/><polygon points="81,45 85,52 89,45"/><rect x="25" y="52" width="120" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="45" y="70" fill="#f0fffc" font-size="10">Read V, I, calc Power</text><line x1="85" y1="78" x2="85" y2="90" stroke="#0affb3"/><polygon points="81,90 85,97 89,90"/><rect x="190" y="52" width="130" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="215" y="70" fill="#f0fffc" font-size="10">Upload to ThingSpeak</text><line x1="145" y1="65" x2="188" y2="65" stroke="#0affb3" stroke-dasharray="3"/></svg></div>`,
-      results: "Real-time energy monitoring with ±2% accuracy; saved 20% standby power via relay automation. Historical data accessible via ThingSpeak graphs. Mobile dashboard for remote energy tracking.",
+      results: "Real-time energy monitoring with ±2% accuracy; reduced standby power by 20%. Historical graphs on ThingSpeak, remote accessibility, and automated load control.",
       applications: "Home automation, industrial submetering, net metering, energy audits, demand response.",
       futureScope: "ML-based load forecasting, integration with Home Assistant, voice assistant control, solar net-metering extension."
     },
     powerQuality: {
       title: "🔍 Power Quality Monitoring System",
-      abstract: "Real-time power quality analyzer based on STM32, measuring Total Harmonic Distortion (THD), voltage sag/swell, power factor, and frequency variations. FFT algorithm extracts harmonics up to 25th order for industrial power analysis.",
+      abstract: "Embedded analyzer for real-time power quality: Total Harmonic Distortion (THD), voltage sag/swell, frequency variations, and power factor. Built on STM32F103, FFT-based harmonic analysis up to 25th order for industrial power diagnostics.",
       components: ["STM32F103", "Voltage step-down transformer", "LM324 Op-Amp", "Zero-crossing detector", "ESP32", "Blynk Dashboard", "LCD 20x4"],
-      working: "Voltage signal conditioned, sampled at 8 kHz. STM32 performs FFT to obtain harmonic spectrum, THD = (RMS of harmonics / fundamental). Sag/swell detection via sliding RMS window. Data sent to Blynk and local display for alerts and trend visualization.",
+      working: "Voltage signal conditioned, sampled at 8 kHz. STM32 computes FFT to extract harmonics and calculate THD. Sag/swell detection via sliding RMS window. Data sent to Blynk cloud for visualization and threshold alerts.",
       circuitDiagram: `<div class="diagram-svg"><svg width="100%" height="140" viewBox="0 0 520 110"><rect x="10" y="30" width="80" height="40" fill="none" stroke="#0affb3" rx="6"/><text x="18" y="55" fill="#c5ffee" font-size="9">Signal Cond.</text><line x1="90" y1="50" x2="125" y2="50" stroke="#0affb3"/><rect x="125" y="15" width="110" height="50" fill="none" stroke="#0affb3" rx="8"/><text x="145" y="48" fill="#ccffef" font-size="9">STM32 (FFT + THD)</text><line x1="235" y1="40" x2="270" y2="40" stroke="#0affb3"/><rect x="270" y="20" width="110" height="45" fill="none" stroke="#0affb3" rx="8"/><text x="290" y="48" fill="#ccffef" font-size="9">WiFi / Cloud</text></svg></div>`,
       flowchart: `<div class="diagram-svg"><svg width="100%" height="115" viewBox="0 0 450 95"><rect x="30" y="5" width="130" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="55" y="23" fill="#eefaf5" font-size="10">Sample @8kHz (ADC)</text><line x1="95" y1="31" x2="95" y2="45" stroke="#0affb3"/><rect x="30" y="52" width="140" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="60" y="70" fill="#eefaf5" font-size="10">FFT → THD, PF, Sag/Swell</text><line x1="95" y1="78" x2="95" y2="90" stroke="#0affb3"/><rect x="210" y="52" width="130" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="232" y="70" fill="#eefaf5" font-size="10">Cloud Dashboard</text><line x1="170" y1="65" x2="208" y2="65" stroke="#0affb3" stroke-dasharray="3"/></svg></div>`,
-      results: "THD measured with <0.7% error, sag detection in <1 cycle. Real-time graphs on Blynk, historical archive of power quality events. Improved uptime by early warning of poor power quality.",
-      applications: "Industrial drives, datacenters, substations, power quality audits, sensitive equipment protection.",
+      results: "THD measured with <0.7% error, sag detection in less than 1 cycle. Grafana dashboards showing harmonic spectrum, power factor trends, event logging.",
+      applications: "Industrial drives, data centers, substation monitoring, power quality audits, sensitive equipment protection.",
       futureScope: "AI-based fault classification, IEC 61850 integration, edge ML for anomaly prediction."
     },
     airQuality: {
       title: "🌫️ Air Quality Monitoring (AQI) System",
-      abstract: "Real-time air quality index (AQI) system using ESP32, MQ135 (CO2, NH3), MQ7 (CO) and DHT22. AQI computed based on Indian CPCB standards. Data transmitted to Adafruit IO with live dashboard and threshold alerts.",
+      abstract: "Real-time air quality index (AQI) system using ESP32, MQ135 (CO2, NH3), MQ7 (CO), DHT22. AQI computed according to Indian CPCB standards. Data transmitted to Adafruit IO with live dashboard and automated threshold alerts.",
       components: ["ESP32", "MQ135", "MQ7", "DHT22", "OLED SSD1306", "Buzzer", "Adafruit IO"],
-      working: "Sensors warm-up, ESP32 reads analog voltages and maps to ppm using pre-calibrated curves. AQI sub-indices for each pollutant are combined. Data displayed on OLED, pushed to Adafruit IO every 10 seconds. If CO exceeds 9ppm, buzzer triggers and push notification via IFTTT.",
+      working: "Sensors warm-up, ESP32 reads analog voltages and maps to ppm using pre-calibrated curves. AQI sub-indices for each pollutant are combined. Data displayed on OLED, pushed to Adafruit IO every 10 seconds. If CO exceeds 9ppm, buzzer triggers and IFTTT push notification.",
       circuitDiagram: `<div class="diagram-svg"><svg width="100%" height="135" viewBox="0 0 540 110"><rect x="10" y="35" width="80" height="35" fill="none" stroke="#0affb3" rx="6"/><text x="22" y="58" fill="#c4ffe8" font-size="9">MQ135 / MQ7</text><line x1="90" y1="52" x2="120" y2="52" stroke="#0affb3"/><rect x="120" y="20" width="100" height="50" fill="none" stroke="#0affb3" rx="6"/><text x="143" y="50" fill="#d1ffef" font-size="10">ESP32</text><line x1="220" y1="45" x2="250" y2="45" stroke="#0affb3"/><rect x="250" y="25" width="120" height="45" fill="none" stroke="#0affb3" rx="8"/><text x="270" y="52" fill="#d1ffef" font-size="9">Adafruit IO</text></svg></div>`,
       flowchart: `<div class="diagram-svg"><svg width="100%" height="115" viewBox="0 0 450 95"><rect x="20" y="5" width="135" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="45" y="23" fill="#edfff6" font-size="10">Init MQ & DHT22</text><line x1="87" y1="31" x2="87" y2="45" stroke="#0affb3"/><rect x="20" y="52" width="135" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="43" y="70" fill="#edfff6" font-size="10">ppm → AQI calculation</text><line x1="87" y1="78" x2="87" y2="90" stroke="#0affb3"/><rect x="195" y="52" width="145" height="26" fill="none" stroke="#0affb3" rx="12"/><text x="218" y="70" fill="#edfff6" font-size="10">Cloud + Buzzer Alert</text><line x1="155" y1="65" x2="193" y2="65" stroke="#0affb3" stroke-dasharray="3"/></svg></div>`,
-      results: "Real-time AQI displayed locally and remotely; email/ buzzer alerts for hazardous levels. Achieved 92% accuracy compared to reference monitor, historical trends help identify pollution patterns.",
-      applications: "Smart city pollution monitoring, indoor air purifiers, HVAC automation, industrial safety systems.",
+      results: "Real-time AQI locally and remotely; email/buzzer alerts for hazardous levels. 92% accuracy vs reference monitor, historical AQI trends.",
+      applications: "Smart city pollution monitoring, indoor air purifiers, HVAC automation, industrial safety.",
       futureScope: "LoRaWAN mesh networking, solar-powered nodes, predictive AQI using time-series models."
     }
   };
 
   const reportPanel = document.getElementById('reportPanel');
 
-  // Utility: generate PDF dynamically using jsPDF
-  async function downloadProjectPDF(projectId) {
-    const data = projectsData[projectId];
-    if (!data) return;
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    doc.setFont('helvetica');
-    doc.setFontSize(20);
-    doc.setTextColor(0, 180, 180);
-    doc.text(data.title.replace(/[^a-zA-Z0-9 ]/g, ''), 15, 20);
-    doc.setFontSize(11);
-    doc.setTextColor(30, 255, 210);
-    doc.text(`Abstract:`, 15, 35);
-    doc.setFontSize(10);
-    doc.setTextColor(200, 200, 200);
-    const splitAbstract = doc.splitTextToSize(data.abstract, 170);
-    doc.text(splitAbstract, 15, 42);
-    let y = 42 + splitAbstract.length * 5;
-    doc.setFontSize(11);
-    doc.setTextColor(0, 255, 190);
-    doc.text(`Components Used:`, 15, y);
-    doc.setFontSize(9);
-    doc.setTextColor(220, 220, 220);
-    const comps = data.components.join(", ");
-    doc.text(comps, 15, y + 6);
-    y += 15;
-    doc.setFontSize(11);
-    doc.setTextColor(0, 255, 190);
-    doc.text(`Working Principle:`, 15, y);
-    doc.setFontSize(9);
-    doc.setTextColor(220, 220, 220);
-    const workSplit = doc.splitTextToSize(data.working, 170);
-    doc.text(workSplit, 15, y + 6);
-    y += 10 + workSplit.length * 4.5;
-    if (y > 260) { doc.addPage(); y = 20; }
-    doc.setFontSize(11);
-    doc.setTextColor(0, 255, 190);
-    doc.text(`Results:`, 15, y);
-    doc.setFontSize(9);
-    doc.setTextColor(220,220,220);
-    const resSplit = doc.splitTextToSize(data.results, 170);
-    doc.text(resSplit, 15, y + 6);
-    y += 12 + resSplit.length * 4.5;
-    doc.setFontSize(11);
-    doc.setTextColor(0, 255, 190);
-    doc.text(`Applications:`, 15, y);
-    doc.setFontSize(9);
-    doc.setTextColor(220,220,220);
-    doc.text(data.applications, 15, y + 6);
-    y += 12;
-    doc.text(`Future Scope:`, 15, y);
-    doc.setFontSize(9);
-    const futureSplit = doc.splitTextToSize(data.futureScope, 170);
-    doc.text(futureSplit, 15, y + 6);
-    doc.save(`${projectId}_Full_Report.pdf`);
-  }
-
-  function renderReport(projectKey) {
-    const proj = projectsData[projectKey];
-    if (!proj) return;
+  // Render detailed report on same page
+  function showReport(projectKey) {
+    const project = projectsData[projectKey];
+    if (!project) return;
     const html = `
       <div class="report-header">
-        <h2>${proj.title}</h2>
-        <div>
-          <button class="close-report" id="closeReportBtn"><i class="fas fa-times"></i> Close Report</button>
-        </div>
+        <h2>${project.title}</h2>
+        <button class="close-report" id="closeReportBtn"><i class="fas fa-times"></i> Close Report</button>
       </div>
       <div class="report-grid">
-        <div class="report-section"><h3><i class="fas fa-file-alt"></i> Abstract</h3><p>${proj.abstract}</p></div>
-        <div class="report-section"><h3><i class="fas fa-microchip"></i> Components Used</h3><div class="components-list">${proj.components.map(c => `<span class="comp-tag">${c}</span>`).join('')}</div></div>
-        <div class="report-section"><h3><i class="fas fa-cogs"></i> Working Principle</h3><p>${proj.working}</p></div>
-        <div class="report-section"><h3><i class="fas fa-project-diagram"></i> Circuit Diagram</h3>${proj.circuitDiagram}</div>
-        <div class="report-section"><h3><i class="fas fa-chart-line"></i> Flowchart</h3>${proj.flowchart}</div>
-        <div class="report-section"><h3><i class="fas fa-chart-bar"></i> Results</h3><p>${proj.results}</p></div>
-        <div class="report-section"><h3><i class="fas fa-industry"></i> Applications</h3><p>${proj.applications}</p></div>
-        <div class="report-section"><h3><i class="fas fa-rocket"></i> Future Scope</h3><p>${proj.futureScope}</p></div>
-        <div style="text-align: center; margin-top: 0.5rem;">
-          <button class="download-pdf-btn" id="downloadPdfBtn"><i class="fas fa-download"></i> Download Full Report (PDF)</button>
+        <div class="report-section"><h3><i class="fas fa-file-alt"></i> Abstract</h3><p>${project.abstract}</p></div>
+        <div class="report-section"><h3><i class="fas fa-microchip"></i> Components Used</h3><div class="components-list">${project.components.map(c => `<span class="comp-tag">${c}</span>`).join('')}</div></div>
+        <div class="report-section"><h3><i class="fas fa-cogs"></i> Working Principle</h3><p>${project.working}</p></div>
+        <div class="report-section"><h3><i class="fas fa-project-diagram"></i> Circuit Diagram</h3>${project.circuitDiagram}</div>
+        <div class="report-section"><h3><i class="fas fa-chart-line"></i> Flowchart</h3>${project.flowchart}</div>
+        <div class="report-section"><h3><i class="fas fa-chart-bar"></i> Results</h3><p>${project.results}</p></div>
+        <div class="report-section"><h3><i class="fas fa-industry"></i> Applications</h3><p>${project.applications}</p></div>
+        <div class="report-section"><h3><i class="fas fa-rocket"></i> Future Scope</h3><p>${project.futureScope}</p></div>
+        <div style="text-align: center; margin-top: 1rem;">
+          <button class="download-pdf-btn" id="dynamicDownloadBtn"><i class="fas fa-download"></i> Download Full Report (PDF)</button>
         </div>
       </div>
     `;
@@ -606,7 +548,7 @@
       reportPanel.style.display = 'none';
       reportPanel.innerHTML = '';
     });
-    const downloadBtn = document.getElementById('downloadPdfBtn');
+    const downloadBtn = document.getElementById('dynamicDownloadBtn');
     downloadBtn.addEventListener('click', (e) => {
       e.preventDefault();
       downloadProjectPDF(projectKey);
@@ -614,13 +556,90 @@
     reportPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // attach View Report listeners
+  // PDF handling: try to fetch local PDF from assets/reports/ folder, else generate dynamically
+  async function downloadProjectPDF(projectId) {
+    const fileName = `${projectId}.pdf`;
+    const localPdfPath = `assets/reports/${fileName}`;
+    // attempt fetch to check existence
+    try {
+      const response = await fetch(localPdfPath, { method: 'HEAD', cache: 'no-cache' });
+      if (response.ok) {
+        // file exists -> trigger download
+        const a = document.createElement('a');
+        a.href = localPdfPath;
+        a.download = `${projectId}_Full_Report.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+      } else {
+        throw new Error('PDF not found locally');
+      }
+    } catch (err) {
+      // fallback: dynamically generate PDF using jsPDF
+      generateDynamicPDF(projectId);
+    }
+  }
+
+  function generateDynamicPDF(projectId) {
+    const proj = projectsData[projectId];
+    if (!proj) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    doc.setFont('helvetica');
+    doc.setFontSize(20);
+    doc.setTextColor(0, 180, 180);
+    doc.text(proj.title.replace(/[^a-zA-Z0-9 ]/g, ''), 15, 20);
+    doc.setFontSize(11);
+    doc.setTextColor(30, 255, 210);
+    doc.text(`Abstract:`, 15, 35);
+    doc.setFontSize(10);
+    doc.setTextColor(200, 200, 200);
+    const abstractSplit = doc.splitTextToSize(proj.abstract, 170);
+    doc.text(abstractSplit, 15, 42);
+    let y = 42 + abstractSplit.length * 5.5;
+    doc.setFontSize(11);
+    doc.setTextColor(0, 255, 190);
+    doc.text(`Components Used:`, 15, y);
+    doc.setFontSize(9);
+    doc.setTextColor(220,220,220);
+    doc.text(proj.components.join(", "), 15, y+6);
+    y += 15;
+    doc.setFontSize(11);
+    doc.setTextColor(0, 255, 190);
+    doc.text(`Working Principle:`, 15, y);
+    doc.setFontSize(9);
+    doc.setTextColor(220,220,220);
+    const workSplit = doc.splitTextToSize(proj.working, 170);
+    doc.text(workSplit, 15, y+6);
+    y += 12 + workSplit.length * 4.5;
+    if (y > 260) { doc.addPage(); y = 20; }
+    doc.setFontSize(11);
+    doc.setTextColor(0, 255, 190);
+    doc.text(`Results:`, 15, y);
+    doc.setFontSize(9);
+    doc.setTextColor(220,220,220);
+    const resSplit = doc.splitTextToSize(proj.results, 170);
+    doc.text(resSplit, 15, y+6);
+    y += 12 + resSplit.length * 4.5;
+    doc.setFontSize(11);
+    doc.setTextColor(0, 255, 190);
+    doc.text(`Applications:`, 15, y);
+    doc.setFontSize(9);
+    doc.text(proj.applications, 15, y+6);
+    y += 12;
+    doc.text(`Future Scope:`, 15, y);
+    doc.setFontSize(9);
+    const futureSplit = doc.splitTextToSize(proj.futureScope, 170);
+    doc.text(futureSplit, 15, y+6);
+    doc.save(`${projectId}_Full_Report.pdf`);
+  }
+
+  // Event listeners for "View Report"
   document.querySelectorAll('.view-report-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      const projectId = btn.getAttribute('data-project');
-      if (projectsData[projectId]) {
-        renderReport(projectId);
-      }
+      const projectKey = btn.getAttribute('data-project');
+      if (projectsData[projectKey]) showReport(projectKey);
     });
   });
 </script>
